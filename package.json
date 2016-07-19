@@ -1,0 +1,22 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "Backend for multi-tenant institutions using Self-Reported Study",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoltMansfield/self-reported-study-api-server.git"
+  },
+  "author": "Holt Mansfield <holt.mansfield@gmail.com> (gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HoltMansfield/self-reported-study-api-server/issues"
+  },
+  "homepage": "https://github.com/HoltMansfield/self-reported-study-api-server#readme",
+  "dependencies": {
+    "bluebird": "^3.4.1"
+  }
+}
