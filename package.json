@@ -6,9 +6,9 @@
   "scripts": {
     "test": "mocha 'server/**/*tests.js' --require test/mocha-prepare --reporter spec",
     "test-debug": "mocha 'server/**/*tests.js' --debug-brk --reporter spec",
-    "start": "node ./server/app/app.js",
-    "mon": "nodemon /server/app/app.js",
-    "d": "node-debug ./server/app/app.js"
+    "start": "node ./server/app/start-server.js",
+    "mon": "nodemon /server/app/start-server.js",
+    "d": "node-debug ./server/app/start-server.js"
   },
   "repository": {
     "type": "git",
