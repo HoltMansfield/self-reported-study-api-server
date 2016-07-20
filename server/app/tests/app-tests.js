@@ -10,12 +10,7 @@ process.env.NODE_ENV = 'test';
 // System Under Test
 var fixture = rek('create-server');
 
-describe('create-server', function() {
-  // it('should be defined', function() {
-  //   //expect(fixture).isDefined();
-  //   assert.isDefined(fixture);    
-  // });
-
+describe('Create Server', function() {
   var handleError = function(error) {
     console.log('HANDLE ERROR:');
     console.log(error);

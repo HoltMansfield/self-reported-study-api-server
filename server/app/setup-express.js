@@ -1,6 +1,8 @@
 var Promise = require('bluebird');
+var rek = require('rekuire');  
 var express    = require('express');
 var expressJwt = require('express-jwt');
+var errorHandling  = rek('error-handling');
 
 var doInitialization = function(resolve, reject) {
     var app = express();
@@ -8,7 +10,7 @@ var doInitialization = function(resolve, reject) {
     resolve(app);
 };
 
-var doConnection = function(resolve, reject, app) {
+var doListen = function(resolve, reject, app) {
      // default port
     process.env.PORT = process.env.PORT || 3000;
 
@@ -18,8 +20,6 @@ var doConnection = function(resolve, reject, app) {
     app.set('port', process.env.PORT);
 
     app.listen(app.get('port'), function() {
-        console.log('~ Express server listening on port #: ' + app.get('port'));
-
         resolve(app);
     });   
 };
@@ -39,6 +39,19 @@ var preRoutesInitalization = function(resolve, reject, app) {
   resolve(app);                    
 };
 
+var postRoutesInitalization = function(resolve, reject, app) {
+  /*
+     api route handlers are the entry point to this api-server
+     the route handlers use tight promise chains and handle their own errors
+
+     nothing should ever bubble up to this global error handler
+     if it does, this error handler is here to let us know we have a leak in our promise chains/error handling
+  */
+  app.use(errorHandling.errorHandler);    
+
+  resolve(app);               
+};
+
 
 // the first method called during startup takes no arguments
 module.exports.initialize = function() {
@@ -48,13 +61,20 @@ module.exports.initialize = function() {
 // The actual http listener
 module.exports.listen = function(app) {
     return new Promise(function(resolve, reject) {
-        return doConnection(resolve, reject, app);
+        return doListen(resolve, reject, app);
     });
 };
 
-// Middleware that needs to be configured before routes are created
+// Middleware that needs to be configured BEFIRE routes are created
 module.exports.preRoutesInitalization = function(app) {
     return new Promise(function(resolve, reject) {
         return preRoutesInitalization(resolve, reject, app);
+    });
+};
+
+// Middleware that needs to be configured AFTER routes are created
+module.exports.postRoutesInitalization = function(app) {
+    return new Promise(function(resolve, reject) {
+        return postRoutesInitalization(resolve, reject, app);
     });
 };

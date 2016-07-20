@@ -1,10 +1,11 @@
+var Promise = require('bluebird');
 var fs = require('fs');
 var path = require('path');
-var Promise = require('bluebird');
+var config = require('config');
+
 var mongoose = require('mongoose');
 var Schema       = mongoose.Schema;
 
-var configValues = require('../app/config/config-loader');
 var dbConnection;
 var models = {};
 var schema = {};
@@ -14,9 +15,10 @@ var createCollection = function(file) {
   var modulePath = './collections/' +modelName;
   var rawJson = require(modulePath);
 
-  // create schema
+  // create mongoose schema from definition
   var schema = mongoose.Schema(rawJson);
-  // create model
+
+  // create mongoose model
   var model = mongoose.model(modelName, schema);
 
   Promise.promisifyAll(model);
@@ -27,8 +29,6 @@ var createCollection = function(file) {
 
   // aggregate this model
   models[modelName] = model;
-
-  console.log('~ collection created for: ' +modelName);
 };
 
 var importModels = function() {
@@ -42,21 +42,27 @@ var importModels = function() {
 module.exports.schema = schema;
 module.exports.models = models;
 
-module.exports.connect = function() {
+var doConnection = function(resolve, reject, app) {
   var mongoose = require('mongoose');
 
-  // the mocha tests use their own connection
-  if(process.env.NODE_ENV !== 'test') {
-    mongoose.connect(configValues.mongo.connection);
-    dbConnection = mongoose.connection;
+  // make the async call to 'connect'
+  mongoose.connect(config.mongo.connection);
+  dbConnection = mongoose.connection;
 
-    // this is only called if we don't handle the error in the callback to an operation
-    dbConnection.on('error', console.error.bind(console, 'connection error:'));
+  // this is only called if we don't handle the error in the callback to an operation
+  dbConnection.on('error', console.error.bind(console, 'connection error:'));
 
-    dbConnection.once('open', function callback() {
-        console.log('~ MongoDB Initialized');
-    });
-  }
-
+  // import our mongoose models (this might read better inside the 'open' callback below)
   importModels();
+
+  // resolve the promise once connected to DB Server
+  dbConnection.once('open', function callback() {      
+      resolve(app);
+  });  
+};
+
+module.exports.connect = function(app) {
+  return new Promise(function(resolve, reject) {
+    return doConnection(resolve, reject, app);
+  });
 };

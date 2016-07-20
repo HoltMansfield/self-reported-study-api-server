@@ -1,18 +1,17 @@
-var rek = require('rekuire');
 var Promise = require('bluebird');
+var rek = require('rekuire');
 var setupExpress = rek('setup-express');
-var routeLoader = rek('../routes/load-routes');
-// //var mongoManager = rek('../data/mongo-manager');
+var routeLoader = rek('load-routes');
+var mongoManager = rek('mongo-manager');
 
 
 var doInitalization = function() {
   return setupExpress.initialize()
           .then(setupExpress.preRoutesInitalization)
           .then(routeLoader.createRoutes)
-          // .then(mongoManager.connect)
-          // .then(expressMaker.postRoutesInitalization)
+          .then(mongoManager.connect)
+          .then(setupExpress.postRoutesInitalization)
           .then(setupExpress.listen)
-          //.then(returnServer)
           .catch(handleServerCreationError);
 }
 

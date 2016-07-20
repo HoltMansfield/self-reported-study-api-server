@@ -11,3 +11,10 @@ in a second terminal:
 
 
 Now you can go back to the browser and refresh the app
+
+
+To find/kill the node-inspector process:
+
+  lsof -i tcp:5858
+
+  kill -9 <PROCESS_ID>
