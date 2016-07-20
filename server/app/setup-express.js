@@ -47,7 +47,7 @@ var postRoutesInitalization = function(resolve, reject, app) {
      nothing should ever bubble up to this global error handler
      if it does, this error handler is here to let us know we have a leak in our promise chains/error handling
   */
-  app.use(errorHandling.errorHandler);    
+  app.use(errorHandling.requestErrorHandler);    
 
   resolve(app);               
 };

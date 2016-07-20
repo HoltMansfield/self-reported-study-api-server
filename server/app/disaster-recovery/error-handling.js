@@ -1,11 +1,16 @@
-module.exports.errorHandler = function(err, req, res, next) {
+var rek = require('rekuire');
+
+var consoleMessages = rek('console-messages');
+
+module.exports.requestErrorHandler = function(err, req, res, next) {
   var validationErrors = null;
 
   if(err && err.errors) {
     validationErrors = err.errors;
   }
 
-  res.status(422)
+  res
+  .status(422)
   .json(
   {
       success: false,
@@ -16,9 +21,13 @@ module.exports.errorHandler = function(err, req, res, next) {
   });
 
   if(!err.message || err.message.length === 0) {
-    console.log('EMTPY ERROR FOUND');
-    console.log('Need to investigate and refactor');
+    consoleMessages.error('EMTPY ERROR FOUND');
+    consoleMessages.error('Need to investigate and refactor');
   }
 
-  console.log(err.message);
+  consoleMessages.error(err.message);
+};
+
+module.exports.errorHandler = function(err) {
+  consoleMessages.error(err);
 };
