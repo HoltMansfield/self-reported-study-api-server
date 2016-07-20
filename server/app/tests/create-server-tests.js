@@ -8,7 +8,7 @@ var assert = chai.assert;
 process.env.NODE_ENV = 'test';
 
 // System Under Test
-var fixture = rek('create-server');
+var fixture = rek('create-server-once');
 
 describe('Create Server', function() {
   var handleError = function(error) {
@@ -19,8 +19,10 @@ describe('Create Server', function() {
   };
 
   it('should have the following configuration', function(done) {
-    fixture.createServer()
-      .then(function(app) {
+    assert.isDefined(fixture);
+
+    fixture.createServerOnce()
+      .then(function(app) {        
         expect(app.locals.settings.port).to.equal('3000');
 
         done();
