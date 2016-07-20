@@ -1,5 +1,6 @@
 /*
-    We have a series of test suites that test directly against an instance of this express application
+    We have a series of test suites that test directly against an instance of this express application,
+    this ensures we only create the server once
 */
 
 var Promise = require('bluebird');

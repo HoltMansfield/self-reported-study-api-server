@@ -4,7 +4,7 @@
   "description": "Backend for multi-tenant institutions using Self-Reported Study",
   "main": "index.js",
   "scripts": {
-    "test": "mocha 'server/**/*tests.js' --reporter spec",
+    "test": "mocha 'server/**/*tests.js' --require test/mocha-prepare --reporter spec",
     "test-debug": "mocha 'server/**/*tests.js' --debug-brk --reporter spec",
     "start": "node ./server/app/app.js",
     "mon": "nodemon /server/app/app.js",
@@ -28,14 +28,17 @@
     "config": "^1.21.0",
     "express": "^4.14.0",
     "express-jwt": "^3.4.0",
-    "mocha": "^2.5.3",
     "mongo": "^0.1.0",
     "mongoose": "^4.5.5",
     "node-inspector": "^0.12.8",
     "path": "^0.12.7",
     "rekuire": "^0.1.9",
     "server": "0.0.3",
-    "supertest": "^1.2.0",
     "walk": "^2.3.9"
+  },
+  "devDependencies": {
+    "mocha": "^2.5.3",
+    "mocha-prepare": "0.0.1",
+    "supertest": "^1.2.0"
   }
 }

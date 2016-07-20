@@ -1,0 +1,1 @@
+Individual modules in this codebase have corresponding tests in a folder called 'tests'

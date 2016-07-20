@@ -4,9 +4,6 @@ var chai = require('chai');
 var expect = chai.expect;
 var assert = chai.assert;
 
-// prepare test environment
-process.env.NODE_ENV = 'test';
-
 // System Under Test
 var fixture = rek('create-server-once');
 
