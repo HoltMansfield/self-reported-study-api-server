@@ -1,0 +1,13 @@
+{
+  "api": {
+    "language": "es5",
+    "paths": {
+      "routesPath": "server/routes/auto-loaded/api/",
+      "routesTestsPath": "test/api/",
+      "apiModulesPath": "server/data/api/"
+    }
+  },
+  "mongoose": {
+    "modelsPath": "/Users/holt/work/cannaScienceStudio/selfReportedStudy/self-reported-study-api-server/server/data/collections/"
+  }
+}
